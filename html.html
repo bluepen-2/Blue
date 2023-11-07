@@ -51,6 +51,35 @@
 
     // Atribuindo o evento de movimento ao teclado
     document.addEventListener("keydown", moverJogador);
+
+    // Construindo blocos
+    function construirBloco(x, y, tipo) {
+      ctx.fillStyle = cores[tipo];
+      ctx.fillRect(x, y, 1, 1);
+    }
+
+    // Atribuindo o evento de construção ao mouse
+    document.addEventListener("mousedown", function(event) {
+      var x = event.clientX - canvas.offsetLeft;
+      var y = event.clientY - canvas.offsetTop;
+
+      var tipo = Math.floor(Math.random() * cores.length);
+      construirBloco(x, y, tipo);
+    });
+
+    // Destruindo blocos
+    function destruirBloco(x, y) {
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(x, y, 1, 1);
+    }
+
+    // Atribuindo o evento de destruição ao mouse
+    document.addEventListener("mouseup", function(event) {
+      var x = event.clientX - canvas.offsetLeft;
+      var y = event.clientY - canvas.offsetTop;
+
+      destruirBloco(x, y);
+    });
   </script>
 </body>
 </html>
