@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Jogo de Construção 2D</title>
+  <title>Minecraft 2D</title>
 </head>
 <body>
   <canvas id="canvas" width="500" height="500"></canvas>
@@ -32,6 +32,36 @@
     // Movimentando o jogador
     var x = 0;
     var y = 0;
+    var larguraJogador = 20;
+    var alturaJogador = 20;
+
+    // Definindo a câmera
+    var cameraX = 0;
+    var cameraY = 0;
+
+    // Ajustando a câmera
+    function ajustarCamera() {
+      // Posiciona a câmera ao lado do personagem
+      cameraX = x - larguraJogador / 2;
+      cameraY = y - alturaJogador / 2;
+
+      // Limita a câmera ao terreno
+      if (cameraX < 0) {
+        cameraX = 0;
+      } else if (cameraX >= canvas.width) {
+        cameraX = canvas.width - 1;
+      }
+
+      if (cameraY < 0) {
+        cameraY = 0;
+      } else if (cameraY >= canvas.height) {
+        cameraY = canvas.height - 1;
+      }
+
+      // Mantem a câmera a uma distância fixa do jogador
+      cameraX = x - larguraJogador / 2 - 20;
+      cameraY = y - alturaJogador / 2 - 20;
+    }
 
     function moverJogador(event) {
       if (event.keyCode === 38) {
@@ -46,7 +76,10 @@
 
       // Desenhando o jogador
       ctx.fillStyle = "#0000ff";
-      ctx.fillRect(x, y, 10, 10);
+      ctx.fillRect(x - larguraJogador / 2, y - alturaJogador / 2, larguraJogador, alturaJogador);
+
+      // Ajustando a câmera
+      ajustarCamera();
     }
 
     // Atribuindo o evento de movimento ao teclado
