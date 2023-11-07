@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Minecraft HTML</title>
+  <title>Jogo de Construção 2D</title>
 </head>
 <body>
   <canvas id="canvas" width="500" height="500"></canvas>
@@ -65,20 +65,6 @@
 
       var tipo = Math.floor(Math.random() * cores.length);
       construirBloco(x, y, tipo);
-    });
-
-    // Destruindo blocos
-    function destruirBloco(x, y) {
-      ctx.fillStyle = "#000000";
-      ctx.fillRect(x, y, 1, 1);
-    }
-
-    // Atribuindo o evento de destruição ao mouse
-    document.addEventListener("mouseup", function(event) {
-      var x = event.clientX - canvas.offsetLeft;
-      var y = event.clientY - canvas.offsetTop;
-
-      destruirBloco(x, y);
     });
   </script>
 </body>
