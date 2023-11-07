@@ -1,1 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Minecraft HTML</title>
+</head>
+<body>
+  <canvas id="canvas" width="500" height="500"></canvas>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.12.0/p5.min.js"></script>
+  <script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    // Definindo as cores
+    var cores = ["#000000", "#ffffff", "#ff0000", "#00ff00", "#0000ff"];
+
+    // Gerando o terreno
+    function gerarTerreno() {
+      for (var x = 0; x < canvas.width; x++) {
+        for (var y = 0; y < canvas.height; y++) {
+          var cor = cores[Math.floor(Math.random() * cores.length)];
+          ctx.fillStyle = cor;
+          ctx.fillRect(x, y, 1, 1);
+        }
+      }
+    }
+
+    // Iniciando o jogo
+    gerarTerreno();
+
+    // Movimentando o jogador
+    var x = 0;
+    var y = 0;
+
+    function moverJogador(event) {
+      if (event.keyCode === 38) {
+        y--;
+      } else if (event.keyCode === 40) {
+        y++;
+      } else if (event.keyCode === 37) {
+        x--;
+      } else if (event.keyCode === 39) {
+        x++;
+      }
+
+      // Desenhando o jogador
+      ctx.fillStyle = "#0000ff";
+      ctx.fillRect(x, y, 10, 10);
+    }
+
+    // Atribuindo o evento de movimento ao teclado
+    document.addEventListener("keydown", moverJogador);
+  </script>
+</body>
+</html>
