@@ -2,103 +2,57 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Minecraft 2D</title>
+  <title>Jogo da Cobra</title>
 </head>
 <body>
-  <canvas id="canvas" width="500" height="500"></canvas>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.12.0/p5.min.js"></script>
+  <canvas id="caixa" width="400" height="400"></canvas>
   <script>
-    var canvas = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
+    let canvas = document.getElementById("caixa");
+    let ctx = canvas.getContext("2d");
 
-    // Definindo as cores
-    var cores = ["#000000", "#ffffff", "#ff0000", "#00ff00", "#0000ff"];
+    let corpo = [];
+    let comida = {
+      x: Math.floor(Math.random() * 400),
+      y: Math.floor(Math.random() * 400),
+    };
 
-    // Gerando o terreno
-    function gerarTerreno() {
-      for (var x = 0; x < canvas.width; x++) {
-        for (var y = 0; y < canvas.height; y++) {
-          var cor = cores[Math.floor(Math.random() * cores.length)];
-          ctx.fillStyle = cor;
-          ctx.fillRect(x, y, 1, 1);
+    let direcao = "direita";
+
+    function desenhar() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < corpo.length; i++) {
+        ctx.fillStyle = i === 0 ? "black" : "white";
+        ctx.fillRect(corpo[i].x, corpo[i].y, 10, 10);
+      }
+
+      ctx.fillStyle = "red";
+      ctx.fillRect(comida.x, comida.y, 10, 10);
+    }
+
+    function iniciar() {
+      corpo.push({ x: 200, y: 200 });
+      corpo.push({ x: 190, y: 200 });
+      corpo.push({ x: 180, y: 200 });
+
+      setInterval(desenhar, 100);
+
+      canvas.addEventListener("keydown", (event) => {
+        let novaDirecao = event.key;
+
+        if (novaDirecao === "a") {
+          direcao = "esquerda";
+        } else if (novaDirecao === "d") {
+          direcao = "direita";
+        } else if (novaDirecao === "w") {
+          direcao = "cima";
+        } else if (novaDirecao === "s") {
+          direcao = "baixo";
         }
-      }
+      });
     }
 
-    // Iniciando o jogo
-    gerarTerreno();
-
-    // Movimentando o jogador
-    var x = 0;
-    var y = 0;
-    var larguraJogador = 20;
-    var alturaJogador = 20;
-
-    // Definindo a câmera
-    var cameraX = 0;
-    var cameraY = 0;
-
-    // Ajustando a câmera
-    function ajustarCamera() {
-      // Posiciona a câmera ao lado do personagem
-      cameraX = x - larguraJogador / 2;
-      cameraY = y - alturaJogador / 2;
-
-      // Limita a câmera ao terreno
-      if (cameraX < 0) {
-        cameraX = 0;
-      } else if (cameraX >= canvas.width) {
-        cameraX = canvas.width - 1;
-      }
-
-      if (cameraY < 0) {
-        cameraY = 0;
-      } else if (cameraY >= canvas.height) {
-        cameraY = canvas.height - 1;
-      }
-
-      // Mantem a câmera a uma distância fixa do jogador
-      cameraX = x - larguraJogador / 2 - 20;
-      cameraY = y - alturaJogador / 2 - 20;
-    }
-
-    function moverJogador(event) {
-      if (event.keyCode === 38) {
-        y--;
-      } else if (event.keyCode === 40) {
-        y++;
-      } else if (event.keyCode === 37) {
-        x--;
-      } else if (event.keyCode === 39) {
-        x++;
-      }
-
-      // Desenhando o jogador
-      ctx.fillStyle = "#0000ff";
-      ctx.fillRect(x - larguraJogador / 2, y - alturaJogador / 2, larguraJogador, alturaJogador);
-
-      // Ajustando a câmera
-      ajustarCamera();
-    }
-
-    // Atribuindo o evento de movimento ao teclado
-    document.addEventListener("keydown", moverJogador);
-
-    // Construindo blocos
-    function construirBloco(x, y, tipo) {
-      ctx.fillStyle = cores[tipo];
-      ctx.fillRect(x, y, 1, 1);
-    }
-
-    // Atribuindo o evento de construção ao mouse
-    document.addEventListener("mousedown", function(event) {
-      var x = event.clientX - canvas.offsetLeft;
-      var y = event.clientY - canvas.offsetTop;
-
-      var tipo = Math.floor(Math.random() * cores.length);
-      construirBloco(x, y, tipo);
-    });
+    iniciar();
   </script>
 </body>
 </html>
