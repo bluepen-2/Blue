@@ -1,58 +1,107 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Jogo da Cobra</title>
+  <title>Jogo da Cobrinha</title>
 </head>
 <body>
-  <canvas id="caixa" width="400" height="400"></canvas>
+  <canvas id="canvas" width="400" height="400"></canvas>
   <script>
-    let canvas = document.getElementById("caixa");
-    let ctx = canvas.getContext("2d");
+    // Cria o elemento canvas
+    const canvas = document.getElementById("canvas");
 
-    let corpo = [];
-    let comida = {
-      x: Math.floor(Math.random() * 400),
-      y: Math.floor(Math.random() * 400),
+    // Cria a cobra
+    const snake = {
+      // Posição atual da cobra
+      x: 100,
+      y: 100,
+
+      // Direcção atual da cobra
+      direction: "direita",
+
+      // Corpo da cobra
+      body: [
+        {x: 100, y: 100},
+        {x: 90, y: 100},
+        {x: 80, y: 100},
+      ],
     };
 
-    let direcao = "direita";
+    // Cria os elementos do site
+    const elements = [
+      document.querySelector(".element1"),
+      document.querySelector(".element2"),
+      document.querySelector(".element3"),
+    ];
 
-    function desenhar() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Desenha a cobra no canvas
+    function drawSnake() {
+      // Limpa o canvas
+      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
 
-      for (let i = 0; i < corpo.length; i++) {
-        ctx.fillStyle = i === 0 ? "black" : "white";
-        ctx.fillRect(corpo[i].x, corpo[i].y, 10, 10);
+      // Desenha o corpo da cobra
+      for (const point of snake.body) {
+        canvas.getContext("2d").fillStyle = "black";
+        canvas.getContext("2d").fillRect(point.x, point.y, 10, 10);
+      }
+    }
+
+    // Implementa a lógica do jogo
+    function updateSnake() {
+      // Move a cobra
+      switch (snake.direction) {
+        case "direita":
+          snake.x++;
+          break;
+        case "esquerda":
+          snake.x--;
+          break;
+        case "cima":
+          snake.y--;
+          break;
+        case "baixo":
+          snake.y++;
+          break;
       }
 
-      ctx.fillStyle = "red";
-      ctx.fillRect(comida.x, comida.y, 10, 10);
-    }
-
-    function iniciar() {
-      corpo.push({ x: 200, y: 200 });
-      corpo.push({ x: 190, y: 200 });
-      corpo.push({ x: 180, y: 200 });
-
-      setInterval(desenhar, 100);
-
-      canvas.addEventListener("keydown", (event) => {
-        let novaDirecao = event.key;
-
-        if (novaDirecao === "a") {
-          direcao = "esquerda";
-        } else if (novaDirecao === "d") {
-          direcao = "direita";
-        } else if (novaDirecao === "w") {
-          direcao = "cima";
-        } else if (novaDirecao === "s") {
-          direcao = "baixo";
+      // Verifica se a cobra colidiu com a si mesma
+      for (let i = 0; i < snake.body.length - 1; i++) {
+        if (snake.body[i].x === snake.x && snake.body[i].y === snake.y) {
+          // Game over!
+          alert("Game over!");
+          return;
         }
-      });
+      }
+
+      // Verifica se a cobra colidiu com um elemento do site
+      for (const element of elements) {
+        if (detectCollision(snake, element)) {
+          // A cobra comeu um elemento!
+          snake.body.push({x: snake.x, y: snake.y});
+          element.remove();
+        }
+      }
+
+      // Desenha a cobra novamente
+      drawSnake();
     }
 
-    iniciar();
+    // Inicia o jogo
+    setInterval(updateSnake, 100);
+
+    // Função para detectar colisões com elementos do site
+    function detectCollision(snake, element) {
+      // Obtém a posição da cobra
+      const snakePosition = snake.body[0];
+
+      // Obtém a área do elemento
+      const elementRect = element.getBoundingClientRect();
+
+      // Verifica se a cobra está dentro da área do elemento
+      return snakePosition.x >= elementRect.left &&
+        snakePosition.x <= elementRect.right &&
+        snakePosition.y >= elementRect.top &&
+        snakePosition.y <= elementRect.bottom;
+    }
   </script>
 </body>
 </html>
