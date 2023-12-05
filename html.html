@@ -1,107 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Jogo da Cobrinha</title>
-</head>
-<body>
-  <canvas id="canvas" width="400" height="400"></canvas>
-  <script>
-    // Cria o elemento canvas
-    const canvas = document.getElementById("canvas");
+<html lang="pt-br">
+	<head>
+		<meta charset="utf-8">
+		<title>Barbearia Alura</title>
+		<link rel="stylesheet" type="text/css" href="reset.css">
+		<link rel="stylesheet" type="text/css" href="style-home.css">
+	</head>
+	
+	<body>
+		<header>
+			<div class="caixa">
+				<h1>
+					<img src="logo.png">
+				</h1>
 
-    // Cria a cobra
-    const snake = {
-      // Posição atual da cobra
-      x: 100,
-      y: 100,
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="produtos.html">Produtos</a></li>
+						<li><a href="contato.html">Contato</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		
+		<main>
+			<img class="banner" src="banner.jpg">
+			<div class="principal">
+				
+				<h2 class="text-align-center">Sobre a Barbearia Alura</h2>
 
-      // Direcção atual da cobra
-      direction: "direita",
+				<p> Localizada no coração da cidade a <strong>Barbearia Alura</strong> traz para o mercado o que há de melhor para o seu cabelo e barba. Fundada em 2019, a Barbearia Alura já é destaque na cidade e conquista novos clientes a cada dia.</p>
 
-      // Corpo da cobra
-      body: [
-        {x: 100, y: 100},
-        {x: 90, y: 100},
-        {x: 80, y: 100},
-      ],
-    };
+				<p class="missao"><em>Nossa missão é: <strong>"Proporcionar auto-estima e qualidade de vida aos clientes"</strong>.</em></p>
 
-    // Cria os elementos do site
-    const elements = [
-      document.querySelector(".element1"),
-      document.querySelector(".element2"),
-      document.querySelector(".element3"),
-    ];
+				<p>Oferecemos profissionais experientes e antenados às mudanças no mundo da moda. O atendimento possui padrão de excelência e agilidade, garantindo qualidade e satisfação dos nossos clientes.</p>
+			</div>
 
-    // Desenha a cobra no canvas
-    function drawSnake() {
-      // Limpa o canvas
-      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+			<div class="beneficios">
+				<h3 class="text-align-center">Benefícios:</h3>
 
-      // Desenha o corpo da cobra
-      for (const point of snake.body) {
-        canvas.getContext("2d").fillStyle = "black";
-        canvas.getContext("2d").fillRect(point.x, point.y, 10, 10);
-      }
-    }
+				<ul>
+					<li class="itens">Atendimento aos clientes</li>
+					<li class="itens">Espaco diferenciado</li>
+					<li class="itens">Localisacão</li>
+					<li class="itens">Profissionais qualificados</li>
+				</ul>
 
-    // Implementa a lógica do jogo
-    function updateSnake() {
-      // Move a cobra
-      switch (snake.direction) {
-        case "direita":
-          snake.x++;
-          break;
-        case "esquerda":
-          snake.x--;
-          break;
-        case "cima":
-          snake.y--;
-          break;
-        case "baixo":
-          snake.y++;
-          break;
-      }
+				<img src="beneficios.jpg" class="imagemBeneficios">
+			</div>
+		</main>
 
-      // Verifica se a cobra colidiu com a si mesma
-      for (let i = 0; i < snake.body.length - 1; i++) {
-        if (snake.body[i].x === snake.x && snake.body[i].y === snake.y) {
-          // Game over!
-          alert("Game over!");
-          return;
-        }
-      }
-
-      // Verifica se a cobra colidiu com um elemento do site
-      for (const element of elements) {
-        if (detectCollision(snake, element)) {
-          // A cobra comeu um elemento!
-          snake.body.push({x: snake.x, y: snake.y});
-          element.remove();
-        }
-      }
-
-      // Desenha a cobra novamente
-      drawSnake();
-    }
-
-    // Inicia o jogo
-    setInterval(updateSnake, 100);
-
-    // Função para detectar colisões com elementos do site
-    function detectCollision(snake, element) {
-      // Obtém a posição da cobra
-      const snakePosition = snake.body[0];
-
-      // Obtém a área do elemento
-      const elementRect = element.getBoundingClientRect();
-
-      // Verifica se a cobra está dentro da área do elemento
-      return snakePosition.x >= elementRect.left &&
-        snakePosition.x <= elementRect.right &&
-        snakePosition.y >= elementRect.top &&
-        snakePosition.y <= elementRect.bottom;
-    }
-  </script>
-</body>
+		<footer>
+			<img src="logo-branco.png">
+			<p class="copyright">&copy; Copyright Barbearia Alura - 2020</p>
+		</footer>
+	</body>	
 </html>
